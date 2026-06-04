@@ -1,0 +1,10 @@
+{
+  "step": 20,
+  "world_size": 2,
+  "assignment": {
+    "net.0.bias": 0,
+    "net.0.weight": 1,
+    "net.2.bias": 0,
+    "net.2.weight": 1
+  }
+}

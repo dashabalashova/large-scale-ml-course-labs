@@ -1,0 +1,40 @@
+name: Grade module_2 homework
+
+# Runs the grader automatically on fork PRs WITHOUT manual approval.
+#
+# Why pull_request_target: on `pull_request` events from forks GitHub requires
+# a maintainer to approve each run. `pull_request_target` runs in the context
+# of the BASE repo, so no approval is needed.
+#
+# SECURITY (tamper-resistance preserved): the workflow file and the grader
+# (module_2/grader/) always come from the BASE branch — a student cannot edit
+# grading logic. We deliberately overlay ONLY module_2/HW-solution from the PR
+# head (the student-owned data dir). The grader is stdlib-only and only READS
+# those files; it never executes student code.
+on:
+  pull_request_target:
+    paths:
+      - "module_2/**"
+      - ".github/workflows/grade-module-2.yml"
+
+jobs:
+  grade:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout base (trusted grader + workflow)
+        uses: actions/checkout@v4
+
+      - name: Overlay ONLY the student's HW-solution from the PR head
+        run: |
+          git fetch --no-tags --depth=1 origin \
+            "+refs/pull/${{ github.event.pull_request.number }}/head:pr-head"
+          rm -rf module_2/HW-solution
+          git checkout pr-head -- module_2/HW-solution
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run grader (always from base)
+        run: python module_2/grader/grade_hw.py

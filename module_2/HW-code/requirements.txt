@@ -1,0 +1,7 @@
+# CPU-only PyTorch is enough for this homework.
+# On the CPU cluster install torch from the CPU wheel index, e.g.:
+#   pip install --index-url https://download.pytorch.org/whl/cpu torch
+torch
+numpy
+# only needed to render plot_checkpoint_io.py
+matplotlib

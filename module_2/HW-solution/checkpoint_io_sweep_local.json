@@ -1,0 +1,84 @@
+{
+  "world_size": 4,
+  "reps": 2,
+  "scratch_fs": "ext4",
+  "points": [
+    {
+      "checkpoint_mb": 8,
+      "world_size": 4,
+      "num_tensors": 8,
+      "reps": 2,
+      "vanilla_ms": 14.365,
+      "async_blocking_ms": 4.502,
+      "distributed_parallel_ms": 6.218,
+      "distributed_speedup_vs_vanilla": 2.31,
+      "distributed_beats_vanilla": true
+    },
+    {
+      "checkpoint_mb": 16,
+      "world_size": 4,
+      "num_tensors": 8,
+      "reps": 2,
+      "vanilla_ms": 19.056,
+      "async_blocking_ms": 7.137,
+      "distributed_parallel_ms": 9.538,
+      "distributed_speedup_vs_vanilla": 1.998,
+      "distributed_beats_vanilla": true
+    },
+    {
+      "checkpoint_mb": 32,
+      "world_size": 4,
+      "num_tensors": 8,
+      "reps": 2,
+      "vanilla_ms": 35.304,
+      "async_blocking_ms": 12.909,
+      "distributed_parallel_ms": 17.872,
+      "distributed_speedup_vs_vanilla": 1.975,
+      "distributed_beats_vanilla": true
+    },
+    {
+      "checkpoint_mb": 64,
+      "world_size": 4,
+      "num_tensors": 8,
+      "reps": 2,
+      "vanilla_ms": 122.252,
+      "async_blocking_ms": 27.282,
+      "distributed_parallel_ms": 275.256,
+      "distributed_speedup_vs_vanilla": 0.444,
+      "distributed_beats_vanilla": false
+    },
+    {
+      "checkpoint_mb": 128,
+      "world_size": 4,
+      "num_tensors": 8,
+      "reps": 2,
+      "vanilla_ms": 266.277,
+      "async_blocking_ms": 49.872,
+      "distributed_parallel_ms": 541.392,
+      "distributed_speedup_vs_vanilla": 0.492,
+      "distributed_beats_vanilla": false
+    },
+    {
+      "checkpoint_mb": 256,
+      "world_size": 4,
+      "num_tensors": 8,
+      "reps": 2,
+      "vanilla_ms": 673.322,
+      "async_blocking_ms": 92.005,
+      "distributed_parallel_ms": 1159.621,
+      "distributed_speedup_vs_vanilla": 0.581,
+      "distributed_beats_vanilla": false
+    },
+    {
+      "checkpoint_mb": 512,
+      "world_size": 4,
+      "num_tensors": 8,
+      "reps": 2,
+      "vanilla_ms": 1943.203,
+      "async_blocking_ms": 181.776,
+      "distributed_parallel_ms": 2173.837,
+      "distributed_speedup_vs_vanilla": 0.894,
+      "distributed_beats_vanilla": false
+    }
+  ]
+}

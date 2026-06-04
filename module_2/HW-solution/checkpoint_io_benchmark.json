@@ -1,0 +1,12 @@
+{
+  "checkpoint_mb": 256,
+  "world_size": 4,
+  "num_tensors": 8,
+  "reps": 3,
+  "vanilla_ms": 827.655,
+  "async_blocking_ms": 87.653,
+  "distributed_parallel_ms": 285.372,
+  "distributed_speedup_vs_vanilla": 2.9,
+  "distributed_beats_vanilla": true,
+  "scratch_fs": "virtiofs"
+}

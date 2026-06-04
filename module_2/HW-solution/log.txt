@@ -1,0 +1,18 @@
+[2026-06-04 12:24:55] START_TRAINING seed=42 total_steps=20
+[2026-06-04 12:24:55] step=5 loss=9.327647
+[2026-06-04 12:24:55] step=10 loss=1.993992
+[2026-06-04 12:24:55] step=15 loss=0.312357
+[2026-06-04 12:24:55] step=20 loss=0.189210
+[2026-06-04 12:24:56] SAVED_CHECKPOINT step=20 vanilla=/root/hw/out/checkpoints/vanilla/vanilla_step_20.pt async=/root/hw/out/checkpoints/async/async_step_20.pt distributed=/root/hw/out/checkpoints/distributed/step_20
+[2026-06-04 12:24:56] CHECKPOINT_TIMING step=20 vanilla=12.432ms async_blocking=2.719ms distributed=14.620ms
+[2026-06-04 12:24:56] CHECKPOINT_TIMING_SUMMARY vanilla_avg=12.432ms async_blocking_avg=2.719ms distributed_avg=14.620ms least_blocking=async
+[2026-06-04 12:24:56] FINISHED_TRAINING final_loss=0.189210 total_steps=20
+[2026-06-04 12:25:01] RESUMED_FROM_CHECKPOINT step=20 path=/root/hw/out/checkpoints/vanilla/vanilla_step_20.pt
+[2026-06-04 12:25:01] step=25 loss=0.154375
+[2026-06-04 12:25:01] step=30 loss=0.136859
+[2026-06-04 12:25:01] step=35 loss=0.125203
+[2026-06-04 12:25:01] step=40 loss=0.116859
+[2026-06-04 12:25:01] SAVED_CHECKPOINT step=40 vanilla=/root/hw/out/checkpoints/vanilla/vanilla_step_40.pt async=/root/hw/out/checkpoints/async/async_step_40.pt distributed=/root/hw/out/checkpoints/distributed/step_40
+[2026-06-04 12:25:01] CHECKPOINT_TIMING step=40 vanilla=2.959ms async_blocking=1.783ms distributed=8.861ms
+[2026-06-04 12:25:01] CHECKPOINT_TIMING_SUMMARY vanilla_avg=2.959ms async_blocking_avg=1.783ms distributed_avg=8.861ms least_blocking=async
+[2026-06-04 12:25:01] FINISHED_TRAINING final_loss=0.116859 total_steps=40

@@ -1,0 +1,18 @@
+{
+  "status": "ok",
+  "resumed_from_checkpoint": true,
+  "total_steps": 40,
+  "final_loss": 0.11685891449451447,
+  "checkpoint_path": "module_2/HW-solution/checkpoints/vanilla/vanilla_step_40.pt",
+  "checkpoint_modes": [
+    "vanilla",
+    "async",
+    "distributed"
+  ],
+  "checkpoint_timing_summary": {
+    "vanilla_avg_sec": 0.0029593600011139642,
+    "async_blocking_avg_sec": 0.0017825569993874524,
+    "distributed_avg_sec": 0.00886083499972301,
+    "least_blocking_mode": "async"
+  }
+}
