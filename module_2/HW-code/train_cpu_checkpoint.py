@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""CPU checkpointing homework -- STARTER.
-
-Fill in the four functions marked with ``# YOUR CODE HERE`` below
-(save_vanilla_checkpoint, save_async_checkpoint, save_distributed_checkpoint,
-load_checkpoint). Everything else already works.
+"""CPU checkpointing homework -- reference solution.
 
 Trains a tiny MLP on a synthetic regression dataset on CPU and exercises three
 checkpoint strategies, then demonstrates resume-from-checkpoint:
@@ -71,31 +67,73 @@ class TinyMLP(nn.Module):
 # Checkpoint strategies (these are the functions students implement).
 # --------------------------------------------------------------------------- #
 def save_vanilla_checkpoint(state, ckpt_dir, step):
-    """Save ``state`` to ``<ckpt_dir>/vanilla_step_<step>.pt`` and return the path."""
-    # YOUR CODE HERE
-    raise NotImplementedError
+    """Synchronously write the full training state to a single file."""
+    os.makedirs(ckpt_dir, exist_ok=True)
+    path = os.path.join(ckpt_dir, f"vanilla_step_{step}.pt")
+    torch.save(state, path)
+    return path
 
 
 def save_async_checkpoint(state, ckpt_dir, step):
-    """Write ``state`` to ``<ckpt_dir>/async_step_<step>.pt`` from a background
-    thread; return ``(path, thread)`` so the caller can ``join`` it."""
-    # YOUR CODE HERE
-    raise NotImplementedError
+    """Snapshot the state and write it from a background thread.
+
+    Returns the target path and the thread so the caller can ``join`` it
+    before the process exits. We deep-copy the state first so that training
+    can keep mutating the model in place while the writer runs.
+    """
+    os.makedirs(ckpt_dir, exist_ok=True)
+    path = os.path.join(ckpt_dir, f"async_step_{step}.pt")
+    snapshot = copy.deepcopy(state)
+
+    def _writer():
+        torch.save(snapshot, path)
+
+    thread = threading.Thread(target=_writer, name=f"async-ckpt-{step}")
+    thread.start()
+    return path, thread
 
 
 def save_distributed_checkpoint(state, ckpt_dir, step, world_size=2):
-    """Shard ``state["model"]`` round-robin into ``<ckpt_dir>/step_<step>/shard_<rank>.pt``
-    plus a ``meta.json``; return the per-step dir path. Write the shards
-    concurrently (one thread per rank) -- that parallel write is what lets
-    sharded checkpointing beat vanilla at scale (see bench_checkpoint_io.py)."""
-    # YOUR CODE HERE
-    raise NotImplementedError
+    """Shard the model parameters round-robin across ``world_size`` ranks.
+
+    Each rank's shard is written to its own file; a ``meta.json`` records which
+    parameter went to which rank so the checkpoint can be reassembled.
+    """
+    step_dir = os.path.join(ckpt_dir, f"step_{step}")
+    os.makedirs(step_dir, exist_ok=True)
+
+    model_sd = state["model"]
+    keys = sorted(model_sd.keys())
+    shards = {rank: {} for rank in range(world_size)}
+    assignment = {}
+    for i, key in enumerate(keys):
+        rank = i % world_size
+        shards[rank][key] = model_sd[key]
+        assignment[key] = rank
+
+    # Each "rank" writes its own shard concurrently -- this is what lets sharded
+    # checkpointing beat a single sequential writer once the state is large and
+    # storage offers parallel write bandwidth.
+    writers = []
+    for rank in range(world_size):
+        t = threading.Thread(
+            target=torch.save,
+            args=(shards[rank], os.path.join(step_dir, f"shard_{rank}.pt")),
+        )
+        t.start()
+        writers.append(t)
+    for t in writers:
+        t.join()
+
+    meta = {"step": step, "world_size": world_size, "assignment": assignment}
+    with open(os.path.join(step_dir, "meta.json"), "w") as f:
+        json.dump(meta, f, indent=2)
+    return step_dir
 
 
 def load_checkpoint(path):
-    """Load and return the checkpoint saved at ``path``."""
-    # YOUR CODE HERE
-    raise NotImplementedError
+    """Load a vanilla checkpoint written by ``save_vanilla_checkpoint``."""
+    return torch.load(path, map_location=DEVICE)
 
 
 # --------------------------------------------------------------------------- #
